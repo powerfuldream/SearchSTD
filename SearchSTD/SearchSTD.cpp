@@ -1,16 +1,35 @@
-// SearchSTD.cpp : Defines the entry point for the console application.
+﻿// SearchSTD.cpp : Defines the entry point for the console application.
 //
 
 #include "stdafx.h"
+#include <vector>
+#include <iostream>
+using namespace std;
 
-int BinarySearch(int *array, int key, int low, int high);
-
+int BinarySearch(vector<int> &arr, int key, int low, int high);
+bool InsertSort(vector<int> &arr);
+bool ShellSort(vector<int> &arr);
 int main()
 {
-    return 0;
+	vector<int> arr = { 929,505,209,109,41,19,5,1,0 };
+	for (auto i : arr)
+		cout << i << endl;
+	//InsertSort(arr);
+	ShellSort(arr);
+	for (auto i : arr)
+		cout << i << endl;
+	int key;
+	cout << "search a key:";
+	cin >> key;
+	if (BinarySearch(arr, key, 0, arr.size() - 1))
+	cout << "yes\n";
+
+	else
+		cout << "not in arr\n";
+	return 0;
 }
 
-int BinarySearch(int * arr, int key, int low, int high)
+int BinarySearch(vector<int> & arr, int key, int low, int high)
 {
 	int mid;
 	while (low <= high)
@@ -24,4 +43,53 @@ int BinarySearch(int * arr, int key, int low, int high)
 			low = mid + 1;
 	}
 	return 0;
+}
+
+bool InsertSort(vector<int> &arr)
+{
+	cout << "InsertSort:\n";
+	if (arr.empty())
+		return false;
+
+	int lengh = arr.size();
+	int temp,j;
+	for (int i = 1; i <lengh; ++i)
+	{
+		temp = arr[i];
+		j = i - 1;
+		while (j >= 0 && temp < arr[j])
+		{
+			arr[j + 1] = arr[j];
+			--j;
+		}
+		arr[j + 1] = temp;
+	}
+	return true;
+}
+
+bool ShellSort(vector<int> &arr)
+{
+	cout << "ShellSort:\n";
+	int length = arr.size();
+	int incratement=length;
+	int temp, s;
+	do 
+	{
+		incratement = incratement/3 + 1;
+		for (int j = incratement; j < length; j++)
+		{
+			temp = arr[j];
+			s = j - incratement;
+			while (s >= 0 &&temp < arr[s])
+			{
+				arr[s + incratement] = arr[s];
+				s -= incratement;
+			}
+			arr[s + incratement] = temp;
+		}
+		
+	} while (incratement>1);
+		
+	
+	return true;
 }
