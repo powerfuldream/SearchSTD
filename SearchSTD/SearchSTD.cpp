@@ -9,6 +9,7 @@ using namespace std;
 int BinarySearch(vector<int> &arr, int key, int low, int high);
 bool InsertSort(vector<int> &arr);
 bool ShellSort(vector<int> &arr);
+void BubbleSort(vector<int > &a);
 int main()
 {
 	vector<int> arr = { 929,505,209,109,41,19,5,1,0 };
@@ -92,4 +93,25 @@ bool ShellSort(vector<int> &arr)
 		
 	
 	return true;
+}
+
+void BubbleSort(vector<int> &a) {
+	int n=a.size();
+	int temp;
+	bool exchange= false;
+	for(int i=0;i<n-1;++i)
+	{
+		for(int j=0;j<n-1-i;++j)
+		{
+			if(a[j]>a[j+1])
+			{
+				temp=a[j];
+				a[j]=a[j+1];
+				a[j+1]=temp;
+				exchange= true;
+			}
+		}
+		if(!exchange)
+			return;;
+	}
 }
