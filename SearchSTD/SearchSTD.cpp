@@ -10,6 +10,7 @@ int BinarySearch(vector<int> &arr, int key, int low, int high);
 bool InsertSort(vector<int> &arr);
 bool ShellSort(vector<int> &arr);
 void BubbleSort(vector<int > &a);
+void BinaryInsertSort(vector<int> &a);
 int main()
 {
 	vector<int> arr = { 929,505,209,109,41,19,5,1,0 };
@@ -114,4 +115,34 @@ void BubbleSort(vector<int> &a) {
 		if(!exchange)
 			return;;
 	}
+}
+
+void BinaryInsertSort(vector<int> &a)
+{
+    int n=a.size();
+    int j,temp,low,high,mid;
+    for(int i=1;i<n;++i)
+    {
+        if(a[i]<a[i-1])
+        {
+            temp=a[i];
+            high=i-1;
+            low=0;
+            while(low<=high)
+            {
+                mid=(low+high)/2;
+                if(temp<a[mid])
+                    high=mid-1;
+                else
+                    low=mid+1;
+
+            }
+            for(j=i-1;j>=low;--j )
+            {
+                a[j+1]=a[j];
+            }
+            a[low]=temp;
+        }
+
+    }
 }
