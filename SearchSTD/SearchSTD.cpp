@@ -11,6 +11,7 @@ bool InsertSort(vector<int> &arr);
 bool ShellSort(vector<int> &arr);
 void BubbleSort(vector<int > &a);
 void BinaryInsertSort(vector<int> &a);
+void Selection_Sort(vector<int> &a);
 int main()
 {
 	vector<int> arr = { 929,505,209,109,41,19,5,1,0 };
@@ -145,4 +146,29 @@ void BinaryInsertSort(vector<int> &a)
         }
 
     }
+}
+
+void Selection_Sort(vector<int> &a)
+{
+	int n=a.size();
+	int min,k,temp;
+	for(int i=0;i<n;++i)
+	{
+		min=a[i];
+		for(int j=i+1;j<n;++j)
+		{
+			if(a[j]<min)
+			{
+				min=a[j];
+				k=j;
+			}
+
+		}
+		if(min!=a[i])
+		{
+			temp=a[i];
+			a[i]=a[k];
+			a[k]=temp;
+		}
+	}
 }
