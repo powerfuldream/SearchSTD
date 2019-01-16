@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include <vector>
 #include <iostream>
+#include <stack>
 using namespace std;
 
 int BinarySearch(vector<int> &arr, int key, int low, int high);
@@ -12,13 +13,17 @@ bool ShellSort(vector<int> &arr);
 void BubbleSort(vector<int > &a);
 void BinaryInsertSort(vector<int> &a);
 void Selection_Sort(vector<int> &a);
+void QuickSort(vector<int> &a,int low,int high);
+void QuickSortNor(vector<int> &a, int low, int high);
+int Partition(vector<int>&a, int left, int right);
 int main()
 {
-	vector<int> arr = { 929,505,209,109,41,19,5,1,0 };
+	vector<int> arr = { 2,5,4,7,9,3,6,8,7,1,0 ,10};
 	for (auto i : arr)
 		cout << i << endl;
 	//InsertSort(arr);
-	ShellSort(arr);
+	cout << "QuickSort:\n";
+	QuickSortNor(arr, 0, arr.size()-1);
 	for (auto i : arr)
 		cout << i << endl;
 	int key;
@@ -170,5 +175,80 @@ void Selection_Sort(vector<int> &a)
 			a[i]=a[k];
 			a[k]=temp;
 		}
+	}
+}
+
+
+void QuickSort(vector<int> &a,int low,int high)
+{
+	if (low >=high)
+		return;
+	int key=a[low];
+	int i = low, j = high;
+	while (i < j)
+	{
+		while (i < j&&key <= a[j])
+			--j;
+		if(i<j)
+		a[i++] = a[j];
+
+		while (i <j&&key >= a[i])
+			++i;
+		if(i<j)
+		a[j++] = a[i];
+	}
+	a[i] = key;
+
+	QuickSort(a, low, i - 1);
+	QuickSort(a, i + 1, high);
+}
+
+int Partition(vector<int>&a, int left, int right)
+{
+	int key = a[left];
+	int frist = left, last = right;
+	while (frist < right)
+	{
+		while (frist < right&&key <= a[right])
+			--right;
+		if (frist < right)
+			a[frist] = a[right];
+
+		while (frist < right&&key >= a[frist])
+			++frist;
+		if (frist < right)
+			a[right] = a[frist];
+	}
+	a[frist] = key;
+	return frist;
+}
+
+void QuickSortNor(vector<int> &a, int low, int high)
+{
+	if (low >= high)
+		return;
+
+	stack<int> p;
+	p.push(low);
+	p.push(high);
+	int left, right,boundle;
+	while (!p.empty())
+	{
+		right = p.top();
+		p.pop();
+		left = p.top();
+		p.pop();
+		if (left < right)
+		{
+			boundle = Partition(a, left, right);
+
+			p.push(left);
+			p.push(boundle-1);
+
+			p.push(boundle + 1);
+			p.push(right);
+		}
+		
+
 	}
 }
