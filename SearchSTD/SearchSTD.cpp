@@ -16,14 +16,17 @@ void Selection_Sort(vector<int> &a);
 void QuickSort(vector<int> &a,int low,int high);
 void QuickSortNor(vector<int> &a, int low, int high);
 int Partition(vector<int>&a, int left, int right);
+void Max_HeapAdjust(vector<int> & a, int i, int n);
+void Min_HeapAdjust(vector<int> & a, int i, int n);
+void HeapSort(vector<int> &a);
 int main()
 {
-	vector<int> arr = { 2,5,4,7,9,3,6,8,7,1,0 ,10};
+	vector<int> arr = { 2,5,4,7,9,3,6,8,7,1,0,10};
 	for (auto i : arr)
 		cout << i << endl;
 	//InsertSort(arr);
-	cout << "QuickSort:\n";
-	QuickSortNor(arr, 0, arr.size()-1);
+	//cout << "QuickSort:\n";
+	HeapSort(arr);
 	for (auto i : arr)
 		cout << i << endl;
 	int key;
@@ -251,4 +254,64 @@ void QuickSortNor(vector<int> &a, int low, int high)
 		
 
 	}
+}
+
+
+void Max_HeapAdjust(vector<int> & arr, int i, int n)
+{
+	int j = i * 2 + 1;//子节点 
+	while (j < n)
+	{
+		if (j + 1 < n && arr[j] > arr[j + 1])//子节点中找较小的
+		{
+			j++;
+		}
+		if (arr[i] < arr[j])
+		{
+			break;
+		}
+		swap(arr[i], arr[j]);
+		i = j;
+		j = i * 2 + 1;
+	}
+	
+
+}
+
+void HeapSort(vector<int> &a)
+{
+	cout << "heapsort:\n";
+	int n = a.size() - 1;
+	for (int i =  n/2-1; i >=0; --i)
+	{
+		Max_HeapAdjust(a, i, n);
+		//Min_HeapAdjust(a, i, n);
+	}
+
+	for (int i = n; i >0; --i)
+	{
+		int temp;
+		temp = a[0];
+		a[0] = a[i];
+		a[i] = temp;
+		Max_HeapAdjust(a, 1, i - 1);
+		//Min_HeapAdjust(a, 1, i - 1);
+	}
+}
+
+void Min_HeapAdjust(vector<int> & a, int i, int n)
+{
+	int child;
+	int temp = a[i];
+	for (; 2 * i <= n; i = child)
+	{
+		child = 2 * i;
+		if (child<n&&a[child]>a[child + 1])
+			++child;
+		if (temp > a[child])
+			a[temp] = a[child];
+		else
+			break;
+	}
+	a[i] = temp;
 }
