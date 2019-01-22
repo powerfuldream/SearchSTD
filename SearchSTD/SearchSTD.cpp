@@ -16,9 +16,10 @@ void Selection_Sort(vector<int> &a);
 void QuickSort(vector<int> &a,int low,int high);
 void QuickSortNor(vector<int> &a, int low, int high);
 int Partition(vector<int>&a, int left, int right);
-void Max_HeapAdjust(vector<int> & a, int i, int n);
-void Min_HeapAdjust(vector<int> & a, int i, int n);
+void sink(vector<int> &a,int k,int N);
+void swim(vector<int> &a,int k,int N);
 void HeapSort(vector<int> &a);
+void SwimHeapSort(vector<int> &a);
 int main()
 {
 	vector<int> arr = { 2,5,4,7,9,3,6,8,7,1,0,10};
@@ -256,62 +257,72 @@ void QuickSortNor(vector<int> &a, int low, int high)
 	}
 }
 
-
-void Max_HeapAdjust(vector<int> & arr, int i, int n)
+void sink(vector<int> &a,int k,int N)
 {
-	int j = i * 2 + 1;//子节点 
-	while (j < n)
+	int j;
+	while(2*k<=N)
 	{
-		if (j + 1 < n && arr[j] > arr[j + 1])//子节点中找较小的
+		j=2*k;
+		if(j<N && a[j-1]<a[j]) j++;
+		if(a[k-1]<a[j-1])
 		{
-			j++;
+			swap(a[k-1],a[j-1]);
+			k=j;
 		}
-		if (arr[i] < arr[j])
-		{
+		else
 			break;
-		}
-		swap(arr[i], arr[j]);
-		i = j;
-		j = i * 2 + 1;
-	}
-	
 
+	}
 }
 
 void HeapSort(vector<int> &a)
 {
-	cout << "heapsort:\n";
-	int n = a.size() - 1;
-	for (int i =  n/2-1; i >=0; --i)
+	if(a.empty())
+		return;
+	int N=a.size();
+	for(int i=N/2;i>0;--i)
 	{
-		Max_HeapAdjust(a, i, n);
-		//Min_HeapAdjust(a, i, n);
+		sink(a,i,N);
+	}
+	while(N>1)
+	{
+		swap(a[0],a[N-1]);
+		--N;
+		sink(a,1,N);
 	}
 
-	for (int i = n; i >0; --i)
-	{
-		int temp;
-		temp = a[0];
-		a[0] = a[i];
-		a[i] = temp;
-		Max_HeapAdjust(a, 1, i - 1);
-		//Min_HeapAdjust(a, 1, i - 1);
-	}
 }
 
-void Min_HeapAdjust(vector<int> & a, int i, int n)
+
+void swim(vector<int> &a,int k,int N)
 {
-	int child;
-	int temp = a[i];
-	for (; 2 * i <= n; i = child)
+	while(k>1&&a[k-1]>a[k/2-1])
 	{
-		child = 2 * i;
-		if (child<n&&a[child]>a[child + 1])
-			++child;
-		if (temp > a[child])
-			a[temp] = a[child];
-		else
-			break;
+		swap(a[k-1],a[k/2-1]);
+		k=k/2;
 	}
-	a[i] = temp;
 }
+
+void SwimHeapSort(vector<int> &a)
+{
+	if(a.empty())
+		return;
+	int N=a.size();
+	for(int i=1;i<=N;++i)
+	{
+		swim(a,i,N);
+	}
+	while(N>1)
+	{
+		swap(a[0],a[N-1]);
+		--N;
+		for(int i=1;i<=N;++i)
+		{
+			swim(a,i,N);
+		}
+	}
+
+}
+
+
+
